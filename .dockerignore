@@ -1,0 +1,9 @@
+# Files
+*~
+*#
+.\#*
+Dockerfile
+.dockerignore
+node_modules
+.git
+.env

@@ -35,6 +35,11 @@
 
 /node_modules
 
+# Ignore yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
 # Temp files
 *~
 *#
