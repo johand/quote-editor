@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15.1-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    env_file:
+      - .env
+    ports:
+      - 5433:5432
+    restart: always
+  redis:
+    image: redis:7.0.7-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 6380:6379
+    restart: always
+  app:
+    build: .
+    tty: true
+    command: bin/dev
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:${VOLUME_PATH}/quote-editor
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${DB_NAME}_development
+      REDIS_URL: ${REDIS_HOST}://${REDIS_HOST}:${REDIS_PORT}
+    restart: always
+volumes:
+  pgdata:
+  redis:
