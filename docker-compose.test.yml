@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15.1-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+  redis:
+    image: redis:7.0.7-alpine
+    volumes:
+      - redis:/data
+  app:
+    build: .
+    tty: true
+    depends_on:
+      - db
+      - selenium_chrome
+    volumes:
+      - .:${VOLUME_PATH}/quote-editor
+    environment:
+      RAILS_ENV: test
+      SELENIUM_HUB_URL: http://selenium_chrome:4444/wd/hub
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${DB_NAME}_test
+      REDIS_URL: ${REDIS_HOST}://${REDIS_HOST}:${REDIS_PORT}
+  selenium_chrome:
+    container_name: selenium-hub
+    image: selenium/standalone-chrome:108.0
+volumes:
+  pgdata:
+  redis:
