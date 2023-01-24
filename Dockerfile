@@ -4,7 +4,7 @@ RUN addgroup -g 1000 -S deployer && \
     adduser -u 1000 -S deployer -G deployer
 
 RUN apk add --update --no-cache \
-    gcc g++ make libffi-dev \
+    gcc g++ make git libffi-dev \
     libpq postgresql-dev tzdata \
     build-base nodejs yarn
 

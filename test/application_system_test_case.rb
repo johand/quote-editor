@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  include Warden::Test::Helpers
+
   if ENV['SELENIUM_HUB_URL']
     Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
 
